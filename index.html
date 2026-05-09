@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>M.O.C.H.I. LABO Image2.0 Prompt Maker</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="app-header">
+        <div>
+          <p class="eyebrow">M.O.C.H.I. LABO</p>
+          <h1>1分で、サロン画像Promptをつくる。</h1>
+          <p class="lead">考えずに選ぶだけ。法的に安全で、空気感のあるImage2.0用プロンプトへ。</p>
+          <a class="guide-link" href="./guide.html">使い方ガイドを見る</a>
+        </div>
+        <div class="mochi-mark" aria-label="もちスラアイコン" role="img">
+          <img src="./assets/mochi-icon-pointer.png" alt="" />
+        </div>
+      </header>
+
+      <section class="workspace" aria-label="Image2.0 Prompt maker">
+        <form class="panel maker-panel" id="promptForm">
+          <section class="step">
+            <div class="step-heading">
+              <span>01</span>
+              <h2>何を作る？</h2>
+            </div>
+            <div class="option-grid" data-group="useCase" data-mode="single"></div>
+          </section>
+
+          <section class="step">
+            <div class="step-heading">
+              <span>02</span>
+              <h2>どんな空気感？</h2>
+            </div>
+            <div class="option-grid" data-group="mood" data-mode="multi"></div>
+          </section>
+
+          <section class="step">
+            <div class="step-heading">
+              <span>03</span>
+              <h2>誰に届ける？</h2>
+            </div>
+            <label>
+              <span>業種・場面</span>
+              <select id="scene"></select>
+            </label>
+            <label>
+              <span>人物</span>
+              <select id="subject"></select>
+            </label>
+            <div class="detail-grid brand-fields">
+              <label>
+                <span>店名・ブランド名（任意）</span>
+                <input id="brandName" type="text" placeholder="例: 月灯りのサロン" autocomplete="off" />
+              </label>
+              <label>
+                <span>ブランド色・雰囲気（任意）</span>
+                <input id="brandStyle" type="text" placeholder="例: 白、深い青、木の温度感" autocomplete="off" />
+              </label>
+            </div>
+            <label class="check-row brand-fields">
+              <input id="includeCharacter" type="checkbox" />
+              <span>固定キャラ・マスコットを画像に入れる</span>
+            </label>
+            <label class="check-row brand-fields">
+              <input id="useStorePhoto" type="checkbox" />
+              <span>実店舗の写真を背景に反映する</span>
+            </label>
+            <div class="store-photo-note" id="storePhotoNote">
+              <strong>もちスラより</strong>
+              <p>生成前に、店舗の写真をチャッピーに一緒に添付してね。内装・入口・施術室など、使いたい背景がわかる1枚で大丈夫。</p>
+            </div>
+            <label class="brand-fields character-field">
+              <span>固定キャラ・マスコットの説明</span>
+              <input id="characterNote" type="text" placeholder="例: 小さな白い猫のキャラクターを案内役として自然に入れる" autocomplete="off" />
+              <small>チェックした時だけPromptに入ります。もちスラはこのツールの案内役としてだけ表示します。</small>
+            </label>
+          </section>
+
+          <section class="step">
+            <div class="step-heading">
+              <span>04</span>
+              <h2>画像に入れる言葉</h2>
+            </div>
+            <div class="mode-switch" role="tablist" aria-label="入力モード">
+              <button type="button" data-detail-mode="simple">シンプル</button>
+              <button type="button" data-detail-mode="detail">詳細</button>
+            </div>
+
+            <label class="simple-fields">
+              <span>コピーの希望（任意）</span>
+              <input id="copyText" type="text" placeholder="空欄でOK。雰囲気に合わせて短いコピーも作ってもらう" autocomplete="off" />
+              <small>思いつかない時は空欄のままで大丈夫です。</small>
+            </label>
+
+            <div class="detail-fields">
+              <label>
+                <span>目的</span>
+                <select id="detailPurpose">
+                  <option value="event">イベント告知</option>
+                  <option value="menu">メニュー紹介</option>
+                  <option value="campaign">キャンペーン</option>
+                </select>
+              </label>
+              <div class="detail-grid">
+                <label>
+                  <span>タイトル / 名称</span>
+                  <input id="detailTitle" type="text" placeholder="例: 夜のリセットケア" autocomplete="off" />
+                </label>
+                <label>
+                  <span>日時 / 期間</span>
+                  <input id="detailDate" type="text" placeholder="例: 5/20 - 5/31" autocomplete="off" />
+                </label>
+                <label>
+                  <span>場所</span>
+                  <input id="detailPlace" type="text" placeholder="例: 今泉 private salon" autocomplete="off" />
+                </label>
+                <label>
+                  <span>価格 / 参加費</span>
+                  <input id="detailPrice" type="text" placeholder="例: 60min 7,700円" autocomplete="off" />
+                </label>
+                <label>
+                  <span>CTA</span>
+                  <input id="detailCta" type="text" placeholder="例: DMでご予約ください" autocomplete="off" />
+                </label>
+                <label>
+                  <span>注意事項</span>
+                  <input id="detailNote" type="text" placeholder="例: 画像内は最小限、詳細は本文へ" autocomplete="off" />
+                </label>
+              </div>
+            </div>
+          </section>
+        </form>
+
+        <aside class="panel output-panel" aria-label="Prompt生成">
+          <div class="output-top">
+            <div>
+              <p class="meta-label">Prompt生成</p>
+              <strong id="statusText">準備できています</strong>
+            </div>
+            <button type="button" id="generateButton">生成</button>
+          </div>
+
+          <div class="warning-card" id="warningCard">
+            <p class="meta-label">NG表現チェック</p>
+            <div id="warningList"></div>
+          </div>
+
+          <label class="output-block">
+            <span>完成Prompt</span>
+            <textarea id="promptOutput" readonly></textarea>
+          </label>
+          <button class="copy-button" type="button" data-copy-target="promptOutput">Promptをコピー</button>
+
+          <label class="output-block compact">
+            <span>日本語要約</span>
+            <textarea id="summaryOutput" readonly></textarea>
+          </label>
+
+          <label class="output-block compact">
+            <span>注意点</span>
+            <textarea id="noteOutput" readonly></textarea>
+          </label>
+
+          <div class="mochi-advice" id="mochiAdvice">
+            <img class="mini-mochi" src="./assets/mochi-icon-smile.png" alt="" aria-hidden="true" />
+            <p>言葉は少なめで大丈夫。余白が、ちゃんと働いてくれるよ。</p>
+          </div>
+        </aside>
+      </section>
+      <p class="legal-note">
+        このツールは表現リスクを減らすための補助です。公開前の最終確認は、ご自身の業種・地域のルールに合わせて行ってください。
+      </p>
+    </main>
+
+    <div class="floating-mochi" id="floatingMochi" aria-hidden="true">
+      <div class="mochi-face">
+        <img src="./assets/mochi-icon-pointer.png" alt="" />
+      </div>
+      <p id="floatingAdvice">もちスラ待機中。</p>
+    </div>
+
+    <script src="./app.js"></script>
+  </body>
+</html>

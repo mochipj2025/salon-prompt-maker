@@ -1,0 +1,12 @@
+# Local working notes and recordings
+AGENTS.md
+pet-runs/
+レコーディング (66).*
+
+# Older reference asset not used by the public app
+assets/mochisura-guide.png
+
+# Temporary browser QA output
+.chrome-profile/
+.edge-profile/
+*.png.tmp
