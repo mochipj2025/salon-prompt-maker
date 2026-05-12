@@ -1,7 +1,7 @@
 const options = {
   useCase: [
     ["noteHeader", "note見出し画像"],
-    ["instagramPost", "Instagram投稿"],
+    ["instagramPost", "Instagramカルーセル"],
     ["reelCover", "Instagramリール表紙"],
     ["story", "ストーリーズ"],
     ["lpHero", "LPファーストビュー"],
@@ -43,41 +43,50 @@ const useCaseDetails = {
   noteHeader: {
     purpose: "note header image",
     aspectRatio: "16:9",
+    canvasSize: "1280 x 720 px",
     formatHint: "horizontal composition, quiet title space",
   },
   instagramPost: {
-    purpose: "Instagram post",
+    purpose: "Instagram carousel post",
     aspectRatio: "4:5",
-    formatHint: "vertical composition, one message per image",
+    canvasSize: "1080 x 1350 px",
+    formatHint: "strict 4:5 portrait carousel composition, one message per slide, designed for Instagram feed",
+    aspectGuard: "Do not create a square, horizontal, or 9:16 story image. Keep the final canvas exactly 4:5 portrait.",
   },
   reelCover: {
     purpose: "Instagram reel cover",
     aspectRatio: "9:16",
+    canvasSize: "1080 x 1920 px",
     formatHint: "vertical cover with readable center typography",
   },
   story: {
     purpose: "Instagram story",
     aspectRatio: "9:16",
+    canvasSize: "1080 x 1920 px",
     formatHint: "vertical story with generous top and bottom margins",
   },
   lpHero: {
     purpose: "landing page first view",
     aspectRatio: "16:9",
+    canvasSize: "1920 x 1080 px",
     formatHint: "wide hero image with clean visual focus",
   },
   salonPop: {
     purpose: "salon pop sign",
     aspectRatio: "4:5",
+    canvasSize: "1080 x 1350 px",
     formatHint: "print-friendly vertical design with calm hierarchy",
   },
   diagram: {
     purpose: "simple explanatory diagram",
     aspectRatio: "4:5",
+    canvasSize: "1080 x 1350 px",
     formatHint: "clean editorial diagram, not crowded",
   },
   comparison: {
     purpose: "comparison image",
     aspectRatio: "4:5",
+    canvasSize: "1080 x 1350 px",
     formatHint: "subtle two-column comparison without before-after claims",
   },
 };
@@ -277,10 +286,12 @@ function buildPrompt() {
   const baseLines = [
     `Create a high-quality image for ${useCase.purpose}.`,
     `Aspect ratio: ${useCase.aspectRatio}.`,
+    `Canvas size: ${useCase.canvasSize}.`,
+    useCase.aspectGuard,
     `Theme: ${moodWords}.`,
     `Scene: ${state.scene}.`,
     `Main subject: ${state.subject}.`,
-  ];
+  ].filter(Boolean);
 
   const information =
     state.detailMode === "detail"
@@ -321,6 +332,8 @@ function buildPrompt() {
     "- no medical claims",
     "- no guaranteed effects",
     "- no treatment, cure, correction, diagnosis, improvement, or pain-relief claims",
+    `- keep the final image in ${useCase.aspectRatio} aspect ratio`,
+    useCase.aspectGuard && `- ${useCase.aspectGuard}`,
     `- ${useCase.formatHint}`,
     ...brandLines,
     ...storeReferenceLines,
@@ -335,6 +348,7 @@ function buildPrompt() {
   const summary = [
     `用途: ${labelOf("useCase", state.useCase)}`,
     `比率: ${useCase.aspectRatio}`,
+    `推奨サイズ: ${useCase.canvasSize}`,
     `空気感: ${moodLabels}`,
     `場面: ${scene}`,
     `人物: ${subject}`,
